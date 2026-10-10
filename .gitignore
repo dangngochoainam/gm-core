@@ -1,2 +1,7 @@
 # Codegen tool binaries, built from tools/go.mod by `make tools`.
 /bin/
+
+# Output của `make gen-proto`. Chỉ ignore file do plugin sinh ra, không ignore cả
+# application/, để code viết tay đặt cạnh vẫn được track.
+/application/**/*.pb.go
+/application/**/*.pb.gw.go

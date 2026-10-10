@@ -24,7 +24,7 @@ third_party/                              import vendor về, không bao giờ g
   buf/validate/validate.proto
 tools/                                    module riêng, pin buf + 3 plugin bằng tool directive
 bin/                                      binary tool do make build ra, gitignore
-application/                              code Go sinh ra, phản chiếu proto/
+application/                              code Go sinh ra, phản chiếu proto/ — file *.pb.go, *.pb.gw.go bị gitignore
   product/v1/
     dto/product.dto.pb.go                 package productdtov1
     service/product.service.pb.go         package productsvcv1
@@ -107,7 +107,7 @@ Version nằm ở **một chỗ duy nhất là `tools/go.mod`**, pin bằng tool
 checksum trong `tools/go.sum`. `tools/` là module riêng vì bốn tool đó kéo theo khoảng một trăm
 dependency; khai báo trong `go.mod` của `gm-core` thì số đó vào module graph của mọi service, vì
 service nào cũng `require gm-core`. Bump một version là sửa dòng `require` tương ứng, chạy
-`make tools`, và diff của commit chính là phần `application/**` regenerate.
+`make tools` rồi `make gen-proto`.
 
 **Ba generator chạy dưới dạng local plugin, trỏ vào `bin/`.** Đây không phải protoc quay lại: buf
 vẫn tự compile proto, chỉ khác là plugin chạy tại máy thay vì trên Buf Schema Registry. Lý do đổi:
@@ -123,7 +123,10 @@ thư mục service mới được nhận diện mà không phải sửa config.
 
 Dev container của các service **không** mang công cụ codegen nào — xem `NOTES.md`.
 
-Code sinh ra được **commit vào repo**. Commit `application/` cùng với thay đổi `.proto`.
+Code sinh ra **không được commit**: `.gitignore` bỏ qua `*.pb.go` và `*.pb.gw.go` trong
+`application/`, chỉ những file đó, nên code viết tay đặt trong `application/` vẫn được track.
+Một bản checkout mới phải chạy `make gen-proto` trước khi service nào `make mod` được;
+`scripts/task-start.sh` ở root workspace làm việc đó cho worktree của task.
 
 ## Các service tiêu thụ repo này thế nào
 
