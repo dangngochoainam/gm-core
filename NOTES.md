@@ -28,16 +28,16 @@ một repo contract thì vẫn còn thiếu:
 Chưa làm: cả hai chỉ hữu ích khi gắn vào CI, mà ở đây chưa có CI. Thêm vào là một target `lint:` và
 một target `breaking:` cộng vài khối config, khoảng mười dòng.
 
-## Bước CI kiểm tra code sinh ra khớp với proto
+## Code sinh ra không commit (đã chốt, không phải hoãn)
 
-Code sinh ra được commit, nhưng không có gì xác minh rằng `application/` đã được regenerate sau khi
-sửa `.proto`. Lưới chắn chỉ là một job: chạy `make gen-proto`, rồi `git diff --exit-code
-application/`, fail nếu cây làm việc bẩn. Không có nó, người quên regenerate có thể merge một
-contract mà phần Go và phần `.proto` mâu thuẫn nhau, và người tiếp theo chạy `gen-proto` sẽ thấy
-một diff không liên quan chui vào commit của mình.
+`*.pb.go` và `*.pb.gw.go` trong `application/` bị gitignore; chỉ những file đó, không phải cả thư
+mục. Lý do: bản `.pb.go` từng commit đã lệch khỏi `.proto` (thiếu `trace_id` và các field envelope),
+làm gm-product không build được trên `master`. Không commit thì không có gì để lệch, nên cũng không
+cần job CI chạy `gen-proto` rồi `git diff --exit-code application/`.
 
-Chuyện này quan trọng hơn cả việc dùng công cụ nào để generate. Pin version plugin làm output tái
-lập được; chỉ có bước diff mới làm nó *được kiểm chứng*.
+Giá phải trả: checkout nào cũng phải `make gen-proto` trước khi service `make mod`
+(`scripts/task-start.sh` lo cho worktree), CI sau này cũng phải có bước đó, và xem mục "Publish
+`gm-core` theo version".
 
 ## Codegen được phép chạy ở đâu (đã chốt, không phải hoãn)
 
@@ -89,6 +89,10 @@ không có egress.
 với service cho tới khi nó chạy `make mod`. Tag version Go module thật sẽ cho mỗi service một phiên
 bản contract tường minh, nhưng điều đó chỉ có ý nghĩa khi các service deploy độc lập. Lưu ý đây là
 trục khác với hậu tố proto `v1`, vốn để version hóa wire contract.
+
+Vướng: code sinh ra không được commit, mà `go get` không chạy codegen, nên một tag của repo này
+sẽ thiếu package Go. Muốn publish thì phải đưa code sinh ra vào artifact được tag, ví dụ một nhánh
+hay repo release do CI generate rồi commit.
 
 ## Sinh OpenAPI
 
