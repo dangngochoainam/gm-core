@@ -1,0 +1,26 @@
+# The generators are local binaries under bin/, built from the pinned tool
+# dependencies in tools/go.mod. Versions live there, not here, so there is one
+# place to bump. These are plugin binaries, not protoc: buf still compiles the
+# protos itself.
+#
+# Paths are relative to the directory buf runs in, which is the repo root, so
+# generate through `make gen-proto` rather than calling buf from a subdirectory.
+version: v2
+
+# Every go_package is written out in full in the .proto files. Managed mode would
+# override them, so it stays off.
+managed:
+  enabled: false
+
+# module= (not paths=source_relative) places each file at the path in its
+# go_package, so proto/product/v1/dto/ lands in application/product/v1/dto/.
+plugins:
+  - local: bin/protoc-gen-go
+    out: .
+    opt: module=github.com/dangngochoainam/gm-core
+  - local: bin/protoc-gen-go-grpc
+    out: .
+    opt: module=github.com/dangngochoainam/gm-core
+  - local: bin/protoc-gen-grpc-gateway
+    out: .
+    opt: module=github.com/dangngochoainam/gm-core

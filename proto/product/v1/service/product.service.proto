@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package product.v1.service;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "product/v1/dto/product.dto.proto";
+
+option go_package = "github.com/dangngochoainam/gm-core/application/product/v1/service;productsvcv1";
+
+// ProductService is the contract of gm-product. Messages live in the sibling
+// product.v1.dto package and are referenced fully qualified. The google.api.http
+// annotations are read by gm-gateway, the only process that runs a grpc-gateway mux.
+service ProductService {
+  rpc HealthCheck (google.protobuf.Empty) returns (product.v1.dto.HelloReply) {
+    option (google.api.http) = {
+      get: "/v1/health-check"
+    };
+  }
+
+  rpc SayHello (product.v1.dto.HelloRequest) returns (product.v1.dto.HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/say-hello"
+      body: "*"
+    };
+  }
+
+  rpc CreateManyProducts (product.v1.dto.CreateManyProductsRequest) returns (product.v1.dto.CreateManyProductsResponse) {
+    option (google.api.http) = {
+      post: "/v1/products/batch"
+      body: "*"
+    };
+  }
+
+  rpc ListProducts (product.v1.dto.ListProductsRequest) returns (product.v1.dto.ListProductsResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  }
+}

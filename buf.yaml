@@ -1,0 +1,7 @@
+# Workspace, not a published module. Both directories are build inputs so that
+# proto/** resolves its imports; only proto/** is ever code-generated, because the
+# Makefile passes `proto` as the input to `buf generate`, not here.
+version: v2
+modules:
+  - path: proto
+  - path: third_party

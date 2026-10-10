@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package product.v1.dto;
+
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/dangngochoainam/gm-core/application/product/v1/dto;productdtov1";
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1 [(buf.validate.field).required = true];
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+message ProductItem {
+  string name = 1 [(buf.validate.field).required = true];
+  string code = 2 [(buf.validate.field).required = true];
+  double price = 3;
+  string image = 4;
+}
+
+message CreateManyProductsRequest {
+  repeated ProductItem products = 1 [(buf.validate.field).repeated.min_items = 1];
+}
+
+message ProductDetail {
+  string id = 1;
+  string name = 2;
+  string code = 3;
+  double price = 4;
+  string image = 5;
+  string created_at = 6;
+  string last_modified_at = 7;
+}
+
+message CreateManyProductsResponse {
+  string trace_id = 1;
+  string status_code = 2;
+  string reason_code = 3;
+  string reason_message = 4;
+  double time_ms = 5;
+  repeated ProductDetail products = 6;
+}
+
+message ListProductsRequest {
+  int32 limit = 1 [(buf.validate.field).int32.gte = 1, (buf.validate.field).int32.lte = 100];
+  // Opaque cursor from the previous response's next_cursor field.
+  // Omit (or send empty) to fetch the first page.
+  string after = 2;
+  // Field to sort by. Supported values: "created_at" (default), "name".
+  string sort_by = 3;
+  // Sort direction. Supported values: "asc", "desc" (default).
+  string sort_order = 4;
+}
+
+// KeysetPagination is the pagination envelope returned on every list response.
+// has_next tells the caller whether more pages exist.
+// next_cursor must be passed as `after` on the next request; it is opaque — never parse it.
+message KeysetPagination {
+  bool has_next = 1;
+  string next_cursor = 2;
+}
+
+message ListProductsResponse {
+  string trace_id = 1;
+  string status_code = 2;
+  string reason_code = 3;
+  string reason_message = 4;
+  double time_ms = 5;
+  repeated ProductDetail products = 6;
+  KeysetPagination pagination = 7;
+}

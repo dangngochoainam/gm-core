@@ -1,0 +1,2 @@
+# Codegen tool binaries, built from tools/go.mod by `make tools`.
+/bin/
