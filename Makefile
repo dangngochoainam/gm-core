@@ -43,7 +43,7 @@ build:
 
 # golangci-lint pin theo version, chạy qua `go run` nên không cài gì lên máy.
 # Không nằm trong tools/ vì nó cần go >= 1.26, còn mọi module giữ go 1.24.0.
-# Config ở .golangci.yml; chỉ lỗi mới so với origin/master mới làm fail.
+# Config ở .golangci.yml; lint toàn repo.
 GOLANGCI_LINT := go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0
 
 fmt:
