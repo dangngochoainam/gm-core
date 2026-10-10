@@ -91,7 +91,7 @@ make gen-proto   # bin/buf generate proto -> application/
 make mod         # go mod tidy
 make build       # go build ./...
 make fmt         # sửa format: gofmt + goimports
-make lint        # golangci-lint v2.14.0 (config ở .golangci.yml) — chỉ chặn lỗi mới so với origin/master
+make lint        # golangci-lint v2.14.0 (config ở .golangci.yml) — lint toàn repo
 make verify      # lint + build, không chạy test
 make test        # go test ./...
 ```

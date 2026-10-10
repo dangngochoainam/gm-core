@@ -316,10 +316,13 @@ func (x *ProductDetail) GetLastModifiedAt() string {
 	return ""
 }
 
-// Responses carry data only. Success or failure is the gRPC status, and the
-// trace ID travels in metadata; see gm-gateway/docs/response-format.md.
 type CreateManyProductsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	StatusCode    string                 `protobuf:"bytes,2,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	ReasonCode    string                 `protobuf:"bytes,3,opt,name=reason_code,json=reasonCode,proto3" json:"reason_code,omitempty"`
+	ReasonMessage string                 `protobuf:"bytes,4,opt,name=reason_message,json=reasonMessage,proto3" json:"reason_message,omitempty"`
+	TimeMs        float64                `protobuf:"fixed64,5,opt,name=time_ms,json=timeMs,proto3" json:"time_ms,omitempty"`
 	Products      []*ProductDetail       `protobuf:"bytes,6,rep,name=products,proto3" json:"products,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -353,6 +356,41 @@ func (x *CreateManyProductsResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateManyProductsResponse.ProtoReflect.Descriptor instead.
 func (*CreateManyProductsResponse) Descriptor() ([]byte, []int) {
 	return file_product_v1_dto_product_dto_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CreateManyProductsResponse) GetTraceId() string {
+	if x != nil {
+		return x.TraceId
+	}
+	return ""
+}
+
+func (x *CreateManyProductsResponse) GetStatusCode() string {
+	if x != nil {
+		return x.StatusCode
+	}
+	return ""
+}
+
+func (x *CreateManyProductsResponse) GetReasonCode() string {
+	if x != nil {
+		return x.ReasonCode
+	}
+	return ""
+}
+
+func (x *CreateManyProductsResponse) GetReasonMessage() string {
+	if x != nil {
+		return x.ReasonMessage
+	}
+	return ""
+}
+
+func (x *CreateManyProductsResponse) GetTimeMs() float64 {
+	if x != nil {
+		return x.TimeMs
+	}
+	return 0
 }
 
 func (x *CreateManyProductsResponse) GetProducts() []*ProductDetail {
@@ -491,6 +529,11 @@ func (x *KeysetPagination) GetNextCursor() string {
 
 type ListProductsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	StatusCode    string                 `protobuf:"bytes,2,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	ReasonCode    string                 `protobuf:"bytes,3,opt,name=reason_code,json=reasonCode,proto3" json:"reason_code,omitempty"`
+	ReasonMessage string                 `protobuf:"bytes,4,opt,name=reason_message,json=reasonMessage,proto3" json:"reason_message,omitempty"`
+	TimeMs        float64                `protobuf:"fixed64,5,opt,name=time_ms,json=timeMs,proto3" json:"time_ms,omitempty"`
 	Products      []*ProductDetail       `protobuf:"bytes,6,rep,name=products,proto3" json:"products,omitempty"`
 	Pagination    *KeysetPagination      `protobuf:"bytes,7,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -525,6 +568,41 @@ func (x *ListProductsResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListProductsResponse.ProtoReflect.Descriptor instead.
 func (*ListProductsResponse) Descriptor() ([]byte, []int) {
 	return file_product_v1_dto_product_dto_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListProductsResponse) GetTraceId() string {
+	if x != nil {
+		return x.TraceId
+	}
+	return ""
+}
+
+func (x *ListProductsResponse) GetStatusCode() string {
+	if x != nil {
+		return x.StatusCode
+	}
+	return ""
+}
+
+func (x *ListProductsResponse) GetReasonCode() string {
+	if x != nil {
+		return x.ReasonCode
+	}
+	return ""
+}
+
+func (x *ListProductsResponse) GetReasonMessage() string {
+	if x != nil {
+		return x.ReasonMessage
+	}
+	return ""
+}
+
+func (x *ListProductsResponse) GetTimeMs() float64 {
+	if x != nil {
+		return x.TimeMs
+	}
+	return 0
 }
 
 func (x *ListProductsResponse) GetProducts() []*ProductDetail {
@@ -566,9 +644,16 @@ const file_product_v1_dto_product_dto_proto_rawDesc = "" +
 	"\x05image\x18\x05 \x01(\tR\x05image\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x06 \x01(\tR\tcreatedAt\x12(\n" +
-	"\x10last_modified_at\x18\a \x01(\tR\x0elastModifiedAt\"\x9a\x01\n" +
-	"\x1aCreateManyProductsResponse\x129\n" +
-	"\bproducts\x18\x06 \x03(\v2\x1d.product.v1.dto.ProductDetailR\bproductsJ\x04\b\x01\x10\x06R\btrace_idR\vstatus_codeR\vreason_codeR\x0ereason_messageR\atime_ms\"\x84\x01\n" +
+	"\x10last_modified_at\x18\a \x01(\tR\x0elastModifiedAt\"\xf4\x01\n" +
+	"\x1aCreateManyProductsResponse\x12\x19\n" +
+	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x1f\n" +
+	"\vstatus_code\x18\x02 \x01(\tR\n" +
+	"statusCode\x12\x1f\n" +
+	"\vreason_code\x18\x03 \x01(\tR\n" +
+	"reasonCode\x12%\n" +
+	"\x0ereason_message\x18\x04 \x01(\tR\rreasonMessage\x12\x17\n" +
+	"\atime_ms\x18\x05 \x01(\x01R\x06timeMs\x129\n" +
+	"\bproducts\x18\x06 \x03(\v2\x1d.product.v1.dto.ProductDetailR\bproducts\"\x84\x01\n" +
 	"\x13ListProductsRequest\x12\x1f\n" +
 	"\x05limit\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d(\x01R\x05limit\x12\x14\n" +
 	"\x05after\x18\x02 \x01(\tR\x05after\x12\x17\n" +
@@ -578,12 +663,19 @@ const file_product_v1_dto_product_dto_proto_rawDesc = "" +
 	"\x10KeysetPagination\x12\x19\n" +
 	"\bhas_next\x18\x01 \x01(\bR\ahasNext\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor\"\xd6\x01\n" +
-	"\x14ListProductsResponse\x129\n" +
+	"nextCursor\"\xb0\x02\n" +
+	"\x14ListProductsResponse\x12\x19\n" +
+	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x1f\n" +
+	"\vstatus_code\x18\x02 \x01(\tR\n" +
+	"statusCode\x12\x1f\n" +
+	"\vreason_code\x18\x03 \x01(\tR\n" +
+	"reasonCode\x12%\n" +
+	"\x0ereason_message\x18\x04 \x01(\tR\rreasonMessage\x12\x17\n" +
+	"\atime_ms\x18\x05 \x01(\x01R\x06timeMs\x129\n" +
 	"\bproducts\x18\x06 \x03(\v2\x1d.product.v1.dto.ProductDetailR\bproducts\x12@\n" +
 	"\n" +
 	"pagination\x18\a \x01(\v2 .product.v1.dto.KeysetPaginationR\n" +
-	"paginationJ\x04\b\x01\x10\x06R\btrace_idR\vstatus_codeR\vreason_codeR\x0ereason_messageR\atime_msBLZJgithub.com/dangngochoainam/gm-core/application/product/v1/dto;productdtov1b\x06proto3"
+	"paginationBLZJgithub.com/dangngochoainam/gm-core/application/product/v1/dto;productdtov1b\x06proto3"
 
 var (
 	file_product_v1_dto_product_dto_proto_rawDescOnce sync.Once
