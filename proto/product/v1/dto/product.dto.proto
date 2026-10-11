@@ -38,11 +38,8 @@ message ProductDetail {
 }
 
 message CreateManyProductsResponse {
-  string trace_id = 1;
-  string status_code = 2;
-  string reason_code = 3;
-  string reason_message = 4;
-  double time_ms = 5;
+  reserved 1 to 5;
+  reserved "trace_id", "status_code", "reason_code", "reason_message", "time_ms";
   repeated ProductDetail products = 6;
 }
 
@@ -66,11 +63,8 @@ message KeysetPagination {
 }
 
 message ListProductsResponse {
-  string trace_id = 1;
-  string status_code = 2;
-  string reason_code = 3;
-  string reason_message = 4;
-  double time_ms = 5;
+  reserved 1 to 5;
+  reserved "trace_id", "status_code", "reason_code", "reason_message", "time_ms";
   repeated ProductDetail products = 6;
   KeysetPagination pagination = 7;
 }
