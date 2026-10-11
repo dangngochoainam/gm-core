@@ -16,6 +16,8 @@ gm-core/proto/<service>/<version>/{dto,service}/  ──make gen-proto──>  g
 
 ```
 proto/                                    contract của chúng ta
+  common/v1/
+    dto/common.dto.proto                  package common.v1.dto       — enum SystemCode (reason + systemCode)
   product/v1/
     dto/product.dto.proto                 package product.v1.dto      — mọi message
     service/product.service.proto         package product.v1.service  — chỉ khối service
@@ -24,6 +26,7 @@ third_party/                              import vendor về, không bao giờ g
   buf/validate/validate.proto
 tools/                                    module riêng, pin buf + 3 plugin bằng tool directive
 bin/                                      binary tool do make build ra, gitignore
+apperror/                                 Go viết tay: sentinel lỗi nghiệp vụ dùng chung, import gopkg
 application/                              code Go sinh ra, phản chiếu proto/ — file *.pb.go, *.pb.gw.go bị gitignore
   product/v1/
     dto/product.dto.pb.go                 package productdtov1
@@ -31,6 +34,15 @@ application/                              code Go sinh ra, phản chiếu proto/
     service/product.service_grpc.pb.go
     service/product.service.pb.gw.go
 ```
+
+**`apperror/` là package Go viết tay duy nhất, có chủ đích.** `enum SystemCode` là danh mục
+`reason` (tên giá trị) và `systemCode` (số) của toàn hệ thống: service gửi tên trong
+`ErrorInfo.reason`, gm-gateway tra số để trả `systemCode` cho client. `apperror` dựng các sentinel
+dùng chung (`ErrBadRequest`, `ErrNotFound`, …) từ `responsehelper.New` của gopkg và tên trong enum,
+nên gõ sai reason thì không compile. Vì vậy gm-core import gopkg (`replace ... => ../gopkg`);
+gopkg trung lập và không bao giờ import gm-core. Thêm lỗi nghiệp vụ: thêm giá trị vào enum,
+`make gen-proto`, thêm sentinel vào `apperror/`. Reason mà gopkg tự gắn
+(`grpcmiddlewarehelper.Reason*`) phải có trong enum; `apperror_test.go` kiểm tra điều đó.
 
 **Đường dẫn thư mục bắt buộc phải trùng proto package.** `proto/product/v1/dto/` chứa
 `package product.v1.dto;`, không chứa gì khác. Đây là quy tắc style của buf, giữ cho import không

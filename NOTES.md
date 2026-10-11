@@ -5,13 +5,11 @@ xuất hiện nhu cầu cụ thể.
 
 ## Package `common/v1/dto` dùng chung
 
-`KeysetPagination` và response envelope `trace_id / status_code / reason_code / reason_message /
-time_ms` hiện đang bị lặp bên trong `product/v1/dto/product.dto.proto`. Đây là ứng viên rõ ràng cho
+`KeysetPagination` hiện nằm trong `product/v1/dto/product.dto.proto`. Đây là ứng viên rõ ràng cho
 `proto/common/v1/dto/common.dto.proto` để mọi service import.
 
-Chưa làm vì: mới đúng một service migrate sang thì chẳng có gì để chia sẻ, và một package dùng
-chung buộc phải chốt xem envelope là một message để embed hay là các field lặp lại. Xem lại khi
-service thứ hai xuất hiện và chỗ lặp trở thành thật.
+Chưa làm vì: mới đúng một service migrate sang thì chẳng có gì để chia sẻ. Xem lại khi service thứ
+hai xuất hiện và chỗ lặp trở thành thật.
 
 ## `buf lint` và `buf breaking`
 
@@ -105,3 +103,9 @@ Chưa có `protoc-gen-openapiv2` ở đâu cả: không có trong `tools/go.mod`
 
 Chưa có gì quy định một field được khai tử ra sao: `[deprecated = true]` trong một release, rồi
 `reserved`. Viết ra lần đầu tiên có một field thật sự phải ra đi.
+
+## Mã thành công khác `SUCCESS`
+
+gm-gateway luôn trả `systemCode = SUCCESS (1)` cho response thành công. Khi nghiệp vụ cần mã thành
+công riêng, cách dự kiến: service đặt gRPC header `x-system-code`, gateway đọc trong
+`wrapSuccess`. Chưa làm vì chưa API nào cần.
